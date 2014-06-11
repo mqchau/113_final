@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import GetIrvinePrecipitation
 import Irrigation
 import IrrigationPeripheral
+import UpdateHTML
 import subprocess
 import PythonHTTP
 
@@ -35,7 +36,7 @@ def waterZone1():
 
 def UpdateHTMLPage():
 	global irrigate_duration
-	PythonHTTP.UpdateHTML(getCurrentVirtualTimeString(), str(IrrigationPeripheral.get_current_temp()), str(irrigate_duration), [20], GetIrvinePrecipitation.getIrvineWaterData())
+	UpdateHTML.UpdateHTML(getCurrentVirtualTimeString(), str(IrrigationPeripheral.get_current_temp()), str(irrigate_duration), [20], GetIrvinePrecipitation.getIrvineWaterData())
 	
 def LcdUpdate1():
 	global LCD_interval
