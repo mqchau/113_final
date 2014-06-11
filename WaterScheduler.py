@@ -28,11 +28,11 @@ def getIpAddress():
 	return ipaddr
 	
 def waterZone1():
-	IrrigationPeripheral.turnOnLED()
-	time.sleep(irrigate_duration * 60)		#let the LED on the correct amount of time
-	IrrigationPeripheral.turnOffLED()
-	IrrigationPeripheral.flash(0.4)
-	#print "Watering zone 1 at " + getCurrentVirtualTimeString()
+	IrrigationPeripheral.turnOnLED()	
+	s.enter(int(irrigate_duration * 60), 1, IrrigationPeripheral.turnOffLED, ())
+	
+	
+	
 
 def UpdateHTMLPage():
 	global irrigate_duration
