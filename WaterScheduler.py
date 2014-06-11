@@ -1,4 +1,4 @@
-import sched, time, datetime, thread
+import sched, time, datetime, thread, math
 import RPi.GPIO as GPIO
 import GetIrvinePrecipitation
 import Irrigation
@@ -34,8 +34,10 @@ def waterZone1():
 	global watering_time_sec
 	IrrigationPeripheral.turnOnLED()
 	IrrigationPeripheral.lcd_clear()
+	top_string = "water for " + str(int(math.floor(irrigate_duration))) + ":" + str(int(math.floor(irrigate_duration * 60) % 60))
 	for i in xrange(int(irrigate_duration * 60)):
-		IrrigationPeripheral.lcd_write_top(str(int(irrigate_duration * 60) - i) + "s left")
+		IrrigationPeripheral.lcd_write_top(top_string)
+		IrrigationPeripheral.lcd_write_bottom(str(int(irrigate_duration * 60) - i) + "s left")
 		time.sleep(1)
 	IrrigationPeripheral.turnOffLED()
 	watering_time_sec = watering_time_sec + int(irrigate_duration * 60)
@@ -88,7 +90,7 @@ def calculateNewSchedule():
 	
 def getCurrentVirtualTimeString():
 	global start_time, one_hour_factor, watering_time_sec
-	return time.ctime((time.time() - start_time)/one_hour_factor * 3600 - watering_time_sec + start_time)
+	return time.ctime((time.time() - start_time - watering_time_sec)/one_hour_factor * 3600  + start_time)
 	
 def applyHourFactor(time_float):
 	global start_time, one_hour_factor
