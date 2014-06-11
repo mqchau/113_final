@@ -28,10 +28,12 @@ def getIpAddress():
 	return ipaddr
 	
 def waterZone1():
-	IrrigationPeripheral.turnOnLED()	
-	s.enter(int(irrigate_duration * 60), 1, IrrigationPeripheral.turnOffLED, ())
-	
-	
+	IrrigationPeripheral.turnOnLED()
+	IrrigationPeripheral.lcd_clear()
+	for i in xrange(int(irrigate_duration * 60)):
+		IrrigationPeripheral.lcd_write_top(str(int(irrigate_duration * 60) - i) + "s left")
+		time.sleep(1)
+	IrrigationPeripheral.turnOffLED()	
 	
 
 def UpdateHTMLPage():
