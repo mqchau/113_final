@@ -31,6 +31,7 @@ def getIpAddress():
 	return ipaddr
 	
 def waterZone1():
+	global watering_time_sec
 	IrrigationPeripheral.turnOnLED()
 	IrrigationPeripheral.lcd_clear()
 	for i in xrange(int(irrigate_duration * 60)):
@@ -86,7 +87,7 @@ def calculateNewSchedule():
 	setOneDaySchedule(0, new_schedule)
 	
 def getCurrentVirtualTimeString():
-	global start_time, one_hour_factor
+	global start_time, one_hour_factor, watering_time_sec
 	return time.ctime((time.time() - start_time)/one_hour_factor * 3600 - watering_time_sec + start_time)
 	
 def applyHourFactor(time_float):
