@@ -35,7 +35,7 @@ def waterZone1():
 
 def UpdateHTMLPage():
 	global irrigate_duration
-	UpdateHTML.UpdateHTML(getCurrentVirtualTimeString(), str(IrrigationPeripheral.get_current_temp()), str(irrigate_duration), [20], GetIrvinePrecipitation.getIrvineWaterData())
+	PythonHTTP.UpdateHTML(getCurrentVirtualTimeString(), str(IrrigationPeripheral.get_current_temp()), str(irrigate_duration), [20], GetIrvinePrecipitation.getIrvineWaterData())
 	
 def LcdUpdate1():
 	global LCD_interval
