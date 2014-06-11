@@ -119,14 +119,14 @@ def setOneDaySchedule(offset, schedule_list):
 		s.run()					#Expect this: it'll be stuck here forever
 
 if __name__ == "__main__":
-	global irrigate_duration
+	global irrigate_duration, current_schedule
 	GPIO.setmode(GPIO.BCM)
 	IrrigationPeripheral.initializePeripheral()	
 	IrrigationPeripheral.lcd_init()
-	IrrigationPeripheral.turnOffLED()
-	
+	IrrigationPeripheral.turnOffLED()	
 	PythonHTTP.runServer()
-	#schedule = [22, 23, 0, 1]		#water at 1, 2, 3, 4 am
-	irrigate_duration , schedule = Irrigation.getSchedule()
-	current_schedule = schedule
-	setOneDaySchedule(0, schedule)
+		
+	irrigate_duration , current_schedule = Irrigation.getSchedule()
+	UpdateHTMLPage()
+	
+	setOneDaySchedule(0, current_schedule)
