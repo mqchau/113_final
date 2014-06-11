@@ -5,6 +5,7 @@ import Irrigation
 import IrrigationPeripheral
 import UpdateHTML
 import subprocess
+import PythonHTTP
 
 s = sched.scheduler(time.time, time.sleep)
 start_time = time.time()#datetime.datetime.now()
@@ -13,7 +14,7 @@ days_passed = 1
 scheduler_running = False
 one_hour_factor = 10			#we convert 1 hour in to 10 seconds delay only, if you put 3600 here it will be real delay
 num_LCD_updates = 2
-LCD_interval = 10		#10 seconds to cycle, this is in real time, not virtual
+LCD_interval = 5		#10 seconds to cycle, this is in real time, not virtual
 
 current_schedule = None
 irrigate_duration = 0
@@ -57,6 +58,11 @@ def LcdUpdate2():
 	# print "Updating LCD with string 2"	
 	# print "virtual_time = " + getCurrentVirtualTimeString()
 	# print "real_time = " + time.ctime(time.time())
+	s.enter(LCD_interval, 1, LcdUpdate3, ())
+	
+def LcdUpdate3():
+	IrrigationPeripheral.lcd_write_top("Auto Irrigation")
+	IrrigationPeripheral.lcd_write_bottom(getIpAddress())	
 	s.enter(LCD_interval, 1, LcdUpdate1, ())
 	
 	
@@ -119,6 +125,7 @@ if __name__ == "__main__":
 	IrrigationPeripheral.lcd_init()
 	IrrigationPeripheral.turnOffLED()
 	
+	PythonHTTP.runServer()
 	#schedule = [22, 23, 0, 1]		#water at 1, 2, 3, 4 am
 	irrigate_duration , schedule = Irrigation.getSchedule()
 	current_schedule = schedule
