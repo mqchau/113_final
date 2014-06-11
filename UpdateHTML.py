@@ -36,7 +36,7 @@ def UpdateHTML(time_string, current_temp, duration, schedule, data_table):
 			
 			#start data
 			if len(data_table) > 32:
-				new_data_table = [-30:]
+				new_data_table = data_table[-30:]
 			else:
 				new_data_table = data_table
 			for new_hourly_data in new_data_table:
