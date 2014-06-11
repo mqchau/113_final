@@ -15,9 +15,12 @@ scheduler_running = False
 one_hour_factor = 10			#we convert 1 hour in to 10 seconds delay only, if you put 3600 here it will be real delay
 num_LCD_updates = 2
 LCD_interval = 5		#10 seconds to cycle, this is in real time, not virtual
+HTML_update_interval = 5
 
 current_schedule = None
 irrigate_duration = 0
+
+watering_time_sec = 0
 
 def getIpAddress():
 	arg='ip route list'
@@ -33,12 +36,15 @@ def waterZone1():
 	for i in xrange(int(irrigate_duration * 60)):
 		IrrigationPeripheral.lcd_write_top(str(int(irrigate_duration * 60) - i) + "s left")
 		time.sleep(1)
-	IrrigationPeripheral.turnOffLED()	
+	IrrigationPeripheral.turnOffLED()
+	watering_time_sec = watering_time_sec + int(irrigate_duration * 60)
 	
 
 def UpdateHTMLPage():
 	global irrigate_duration
 	UpdateHTML.UpdateHTML(getCurrentVirtualTimeString(), str(IrrigationPeripheral.get_current_temp()), str(irrigate_duration), [20], GetIrvinePrecipitation.getIrvineWaterData())
+	
+	s.enter(HTML_update_interval, 1, UpdateHTMLPage, ())
 	
 def LcdUpdate1():
 	global LCD_interval
@@ -81,7 +87,7 @@ def calculateNewSchedule():
 	
 def getCurrentVirtualTimeString():
 	global start_time, one_hour_factor
-	return time.ctime((time.time() - start_time)/one_hour_factor * 3600 + start_time)
+	return time.ctime((time.time() - start_time)/one_hour_factor * 3600 - watering_time_sec + start_time)
 	
 def applyHourFactor(time_float):
 	global start_time, one_hour_factor
@@ -129,6 +135,6 @@ if __name__ == "__main__":
 	PythonHTTP.runServer()
 		
 	irrigate_duration , current_schedule = Irrigation.getSchedule()
-	UpdateHTMLPage()
+	
 	
 	setOneDaySchedule(0, current_schedule)
