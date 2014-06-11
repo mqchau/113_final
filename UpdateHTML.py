@@ -35,7 +35,11 @@ def UpdateHTML(time_string, current_temp, duration, schedule, data_table):
 			table_data.append(first_row)
 			
 			#start data
-			for new_hourly_data in data_table:
+			if len(data_table) > 32:
+				new_data_table = [-30:]
+			else:
+				new_data_table = data_table
+			for new_hourly_data in new_data_table:
 				new_row = list()
 				new_row.append(str(new_hourly_data['Time'])	)			
 				new_row.append(str(new_hourly_data['Reference ETo'] ))
