@@ -3,7 +3,6 @@ import RPi.GPIO as GPIO
 import GetIrvinePrecipitation
 import Irrigation
 import IrrigationPeripheral
-import UpdateHTML
 import subprocess
 import PythonHTTP
 
